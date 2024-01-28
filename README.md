@@ -8,7 +8,7 @@ daemons that rebuild themselves with each restart.
 This renders convenient configuration as compiler-checked code, or use of templates that become 
 generated source code. 
 
-When you use _mill_ as a launcher, you can simply edit your configuration-as-code or your templates, then
+When you use _mill_ as a launcher, you can simply edit your configuration-as-code or your templates, then hit
 `systemctl restart myservice` and watch your changes take immediate effect. You enjoy the ergonomics of an
 interpreted language with the speed and typesafety of Scala.
 
@@ -17,7 +17,7 @@ interpreted language with the speed and typesafety of Scala.
 1. In `build.sc`, let your module extend `DaemonModule` defined in this package.
    That will give you access to the tasks `runDaemon` and `runMainDaemon`.
 
-2. Override the function `runDaemonPidFile` to define a place where a PID file should be
+2. Override the function `def runDaemonPidFile : Option[os.Path]` to define a place where a PID file should be
    written by _mill_ prior to shutting down, but after spawning your process.
 
 3. Include [mill wrapper](https://github.com/lefou/millw) in your project, and define a launch script that's something like
@@ -33,6 +33,12 @@ interpreted language with the speed and typesafety of Scala.
 
 5. Start your service (`systemctl start myservice`). Your service will build itself before it starts.
    Edit stuff, templates, config, core source. Type `systemctl restart myservice` and it will all rebuild.
+
+### Advanced
+
+If you asked mill to generate a PID file (by overriding `runDaemonPidFile`), your subprocess will have
+`MILL_DAEMON_PID_FILE` in its environment. You can use this to, for example, set up a shutdown hook that
+will strive to delete the file when your process terminates.
 
 ### Examples
 
