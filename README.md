@@ -63,7 +63,7 @@ interpreted language with the speed and typesafety of Scala.
 
 **Why not just use the `runBackground` and `runMainBackground` tasks built into `JavaModule` (and `ScalaModule` by inheritance)?**
 
-Applications started via `runBackground` and `runBackgroundMain` are embedded within a 
+Applications started via `runBackground` and `runBackgroundMain` run embedded within a 
 [`BackgroundWrapper`](https://github.com/com-lihaoyi/mill/blob/e171ad4c57c34a0bff2325327f8afc98d009f63d/scalalib/backgroundwrapper/src/mill/scalalib/backgroundwrapper/BackgroundWrapper.java) process which watches for changes in the files that built the application
 and quits when those occur. This is great, exactly what you want, when you are using the `mill -w` watch
 feature. Whenever you change its source (loosely construed), your application quits and restarts so that
