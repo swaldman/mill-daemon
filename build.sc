@@ -17,7 +17,7 @@ object MillDaemon extends RootModule with ScalaModule with PublishModule {
       description = "A mill module that implements spawning systemd-appropriate forking daemon processes",
       organization = "com.mchange",
       url = "https://github.com/swaldman/mill-daemon",
-      licenses = Seq(License.`Apache-2.0`),
+      licenses = Seq(License.MIT),
       versionControl = VersionControl.github("swaldman", "mill-daemon"),
       developers = Seq(
 	Developer("swaldman", "Steve Waldman", "https://github.com/swaldman")
