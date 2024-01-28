@@ -47,9 +47,11 @@ interpreted language with the speed and typesafety of Scala.
 
 * By default, the daemon subprocess inherits the `mill` launcher's standard-in and standard-out.
   That gives _systemd_ control over where they should be directed, and is usually what you want.
-  However, you can override 
+  However, you can override
+  
   * `def runDaemonOut : os.ProcessOutput`
   * `def runDaemonErr : os.ProcessOutput`
+  
   to take control of these streams yourself, if you prefer.
 
 
