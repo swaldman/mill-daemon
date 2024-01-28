@@ -14,7 +14,7 @@ interpreted language with the speed and typesafety of Scala.
 
 ### How it works
 
-1. In `build.sc`, let your module extend `DaemonModule` defined in this package.
+1. In `build.sc`, let your module extend [`DaemonModule`](src/com/mchange/milldaemon/DaemonModule.scala) defined in this library.
    That will give you access to mill commands
    * `runDaemon` 
    * `runMainDaemon`
