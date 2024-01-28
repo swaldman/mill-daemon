@@ -61,7 +61,7 @@ interpreted language with the speed and typesafety of Scala.
 
 ### FAQ
 
-**Why not just use the `runMainBackground` task built into `JavaModule` (and `ScalaModule` by inheritance)?**
+**Why not just use the `runBackground` and `runMainBackground` tasks built into `JavaModule` (and `ScalaModule` by inheritance)?**
 
 Applications started via `runBackground` and `runBackgroundMain` are embedded within a 
 [`BackgroundWrapper`](https://github.com/com-lihaoyi/mill/blob/e171ad4c57c34a0bff2325327f8afc98d009f63d/scalalib/backgroundwrapper/src/mill/scalalib/backgroundwrapper/BackgroundWrapper.java) process which watches for changes in the files that built the application
