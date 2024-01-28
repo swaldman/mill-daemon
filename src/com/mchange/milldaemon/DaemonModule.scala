@@ -78,6 +78,28 @@ trait DaemonModule extends JavaModule {
     ProcessPidMethod.invoke( jproc ).asInstanceOf[Long]
   }
 
+  private def canWrite( ctx : Ctx, path : os.Path ) : Boolean = {
+    val f = path.toIO
+    if (os.exists(path)) f.canWrite()
+    else {
+      try {
+        f.createNewFile()
+      }
+      catch {
+        case NonFatal(t) =>
+          ctx.log.debug(s"Exception while testing file creation: $t")
+          false
+      }
+      finally {
+        try f.delete()
+        catch {
+          case NonFatal(t) =>
+            ctx.log.debug(s"Exception while cleaning up (deleting) file creation test: $t")
+        }
+      }
+    }
+  }
+
   protected def doRunDaemon(
       runClasspath: Seq[PathRef],
       forkArgs: Seq[String],
@@ -104,7 +126,7 @@ trait DaemonModule extends JavaModule {
       pidFile match {
         case Some( path ) if os.exists( path ) =>
           Result.Failure(s"A file already exists at PID file location ${path}. Please ensure no daemon is currently running, then delete this file.")
-        case Some( path ) if !path.toIO.canWrite() =>
+        case Some( path ) if !canWrite(ctx,path) =>
           Result.Failure(s"Insufficient permission: Cannot write PID file to location ${path}.")
         case Some( path ) =>
           val subProcess = spawnIt
