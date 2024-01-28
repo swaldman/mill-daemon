@@ -72,5 +72,8 @@ you enjoy prompt upgrades.
 However, this approach is not suitable for daemon processes, which are supposed to run stably and indefinitely,
 and should not terminate just because someone is working in the development directories from which they emerged.
 
-The `runDaemon` tasks here give you clean daemons, fully decoupled from your build and whatever may happen next in build directories,
+The `runDaemon` tasks here give you clean daemons, fully decoupled from your build and whatever may happen in your build directories,
 after the parent `mill` process terminates.
+
+When you update your `mill` build, use `systemctl restart <service>`. Until a restart , the "old" service will
+continue in its old way.
