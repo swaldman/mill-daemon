@@ -15,7 +15,9 @@ interpreted language with the speed and typesafety of Scala.
 ### How it works
 
 1. In `build.sc`, let your module extend `DaemonModule` defined in this package.
-   That will give you access to the tasks `runDaemon` and `runMainDaemon`.
+   That will give you access to mill commands
+   * `runDaemon` 
+   * `runMainDaemon`
 
 2. Override the function `def runDaemonPidFile : Option[os.Path]` to define a place where a PID file should be
    written by _mill_ prior to shutting down, but after spawning your process.
@@ -36,9 +38,18 @@ interpreted language with the speed and typesafety of Scala.
 
 ### Advanced
 
-If you asked mill to generate a PID file (by overriding `runDaemonPidFile`), your subprocess will have
-`MILL_DAEMON_PID_FILE` in its environment. You can use this to, for example, set up a shutdown hook that
-will strive to delete the file when your process terminates.
+* If you asked mill to generate a PID file (by overriding `runDaemonPidFile`), your subprocess will have
+  `MILL_DAEMON_PID_FILE` in its environment. You can use this to, for example, set up a shutdown hook that
+  will strive to delete the file when your process terminates.
+
+  If you are running daemons under _systemd_, this is just a nice-to-have backstop. _systemd_ will
+  try to delete the PID file when your process terminates without need for any intervention.
+
+* By default, the daemon subprocess inherits the `mill` launcher's standard-in and standard-out.
+  That gives _systemd_ control over where they should be directed, and is usually what you want.
+  However, you can override `def runDaemonOut : os.ProcessOutput` and `def runDaemonErr : os.ProcessOutput`
+  to take control of these streams yourself, if you prefer.
+
 
 ### Examples
 
