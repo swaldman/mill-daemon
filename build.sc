@@ -14,7 +14,7 @@ object MillDaemon extends RootModule with ScalaModule with PublishModule {
   override def publishVersion = T{"0.0.1"}
   override def pomSettings    = T{
     PomSettings(
-      description = "A mill module that implements spawning systemd-appropriate forking daemon processes",
+      description = "A mill module that implements spawning of systemd-appropriate forking daemon processes",
       organization = "com.mchange",
       url = "https://github.com/swaldman/mill-daemon",
       licenses = Seq(License.MIT),
