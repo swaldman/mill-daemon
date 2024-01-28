@@ -40,7 +40,7 @@ interpreted language with the speed and typesafety of Scala.
 
 * If you asked mill to generate a PID file (by overriding `runDaemonPidFile`), your subprocess will have
   `MILL_DAEMON_PID_FILE` in its environment. You can use this to, for example, set up a shutdown hook that
-  will strive to delete the file when your process terminates.
+  will delete the PID file when your process terminates.
 
   _**Note**: If you are running daemons under_ systemd _, this is just a nice-to-have backstop._ systemd
   _will try to delete the PID file when your process terminates without your intervention._
