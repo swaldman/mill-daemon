@@ -43,7 +43,7 @@ interpreted language with the speed and typesafety of Scala.
   will strive to delete the file when your process terminates.
 
   _**Note**: If you are running daemons under_ systemd _, this is just a nice-to-have backstop._ systemd
-  _will try to delete the PID file when your process terminates without need for any intervention._
+  _will try to delete the PID file when your process terminates without your intervention._
 
 * By default, the daemon subprocess inherits the `mill` launcher's standard-in and standard-out.
   That gives _systemd_ control over where they should be directed, and is usually what you want.
