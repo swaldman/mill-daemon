@@ -9,6 +9,8 @@ import scala.util.control.NonFatal
 
 trait DaemonModule extends JavaModule {
 
+  val EnvMillDaemonPidFile = "MILL_DAEMON_PID_FILE"
+
   def runDaemonOut : os.ProcessOutput = os.Inherit
   def runDaemonErr : os.ProcessOutput = os.Inherit
 
@@ -110,12 +112,12 @@ trait DaemonModule extends JavaModule {
       daemonOutputs: Tuple2[os.ProcessOutput, os.ProcessOutput],
       pidFile: Option[os.Path]
   )(args: String*): Ctx => Result[os.SubProcess] = ctx => {
-    def spawnIt =
+    def spawnIt( extraEnv : Seq[(String,String)] = Nil ) =
       runDaemonSubprocess(
         finalMainClass,
         runClasspath.map(_.path),
         forkArgs,
-        forkEnv,
+        forkEnv ++ extraEnv,
         args,
         workingDir = forkWorkingDir,
         daemonOutputs,
@@ -129,11 +131,11 @@ trait DaemonModule extends JavaModule {
         case Some( path ) if !canWrite(ctx,path) =>
           Result.Failure(s"Insufficient permission: Cannot write PID file to location ${path}.")
         case Some( path ) =>
-          val subProcess = spawnIt
+          val subProcess = spawnIt( Seq( EnvMillDaemonPidFile -> path.toString() ) )
           os.write( path, data = pid(subProcess).toString() + System.lineSeparator() )
           Result.Success(subProcess)
         case None =>
-          Result.Success(spawnIt)
+          Result.Success(spawnIt())
       }
     }
     catch {
