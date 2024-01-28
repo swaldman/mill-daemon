@@ -11,7 +11,7 @@ object MillDaemon extends RootModule with ScalaModule with PublishModule {
   override def scalacOptions = T{ Seq("-deprecation") }
 
   override def artifactName = "mill-daemon"
-  override def publishVersion = T{"0.0.1"}
+  override def publishVersion = T{"0.0.2-SNAPSHOT"}
   override def pomSettings    = T{
     PomSettings(
       description = "A mill module that implements spawning of systemd-appropriate forking daemon processes",
