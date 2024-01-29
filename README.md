@@ -69,7 +69,7 @@ Applications started via `runBackground` and `runBackgroundMain` run embedded wi
 [`BackgroundWrapper`](https://github.com/com-lihaoyi/mill/blob/e171ad4c57c34a0bff2325327f8afc98d009f63d/scalalib/backgroundwrapper/src/mill/scalalib/backgroundwrapper/BackgroundWrapper.java) process which watches for changes in the files that built the application
 and quits when those occur. This is great, exactly what you want, when you are using the `mill -w` watch
 feature. Whenever you change its source (loosely construed), your application quits and restarts so that
-you enjoy prompt upgrades.
+you enjoy prompt updates.
 
 However, this approach is not suitable for daemon processes, which are supposed to run stably and indefinitely,
 and should not terminate just because someone edits a file or runs a task in the directories from which they emerged.
