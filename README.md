@@ -45,15 +45,18 @@ interpreted language with the speed and typesafety of Scala.
   _**Note**: If you are running daemons under_ systemd _, this is just a nice-to-have backstop._ systemd
   _will try to delete the PID file when your process terminates without your intervention._
 
+  If you do set a shudown hook to delete the PID file 
+  **please check that the file is a file whose content is your process' PID before deleting**.
+  Don't blindly delete a file just because someone was able to get its path stuck in an environment variable.
+
 * By default, the daemon subprocess inherits the `mill` launcher's standard-in and standard-out.
   That gives _systemd_ control over where they should be directed, and is usually what you want.
   However, you can override
-  
+
   * `def runDaemonOut : os.ProcessOutput`
   * `def runDaemonErr : os.ProcessOutput`
-  
-  to take control of these streams yourself, if you prefer.
 
+  to take control of these streams yourself, if you prefer.
 
 ### Examples
 
@@ -61,7 +64,7 @@ interpreted language with the speed and typesafety of Scala.
 
 ### FAQ
 
-**Why not just use the `runBackground` and `runMainBackground` tasks built into `JavaModule` (and `ScalaModule` by inheritance)?**
+**Why not just use the `runBackground` and `runMainBackground` tasks built into `JavaModule`?**
 
 Applications started via `runBackground` and `runBackgroundMain` run embedded within a 
 [`BackgroundWrapper`](https://github.com/com-lihaoyi/mill/blob/e171ad4c57c34a0bff2325327f8afc98d009f63d/scalalib/backgroundwrapper/src/mill/scalalib/backgroundwrapper/BackgroundWrapper.java) process which watches for changes in the files that built the application
@@ -70,10 +73,16 @@ feature. Whenever you change its source (loosely construed), your application qu
 you enjoy prompt upgrades.
 
 However, this approach is not suitable for daemon processes, which are supposed to run stably and indefinitely,
-and should not terminate just because someone is working in the development directories from which they emerged.
+and should not terminate just because someone edits a file or runs a task in the directories from which they emerged.
 
-The `runDaemon` tasks here give you clean daemons, fully decoupled from your build and whatever may happen in your build directories,
+The `runDaemon` tasks here give you clean daemons, mostly decoupled from any continued activity in the build directories
 after the parent `mill` process terminates.
 
 When you update your `mill` build, use `systemctl restart <service>`. Until a restart , the "old" service will
 continue in its old way.
+
+(In theory, the daemon may not be _completely_ decoupled from activity its launch directory. Infrequently accessed
+classes compiled into the directory might not be loaded immediately upon daemon launch, and if they are
+deleted or incompatibly upgraded, your daemon could break when it finally requires them. In practice, this would be unusual.
+Nevertheless, daemon launch installations shouldn't be active development directories, just sites for occasional 
+modifications, reconfigurations, and relaunches.)
