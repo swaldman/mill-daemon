@@ -5,8 +5,8 @@
 This project enables [mill](https://mill-build.com/mill/Intro_to_Mill.html) to properly launch systemd
 daemons that rebuild themselves with each restart.
 
-This renders convenient configuration as compiler-checked code, or use of templates that become 
-generated source code. 
+This renders convenient configuration-as-compiler-checked code, or quick-editing of templates that convert to
+generated source code.
 
 When you use _mill_ as a launcher, you can simply edit your configuration-as-code or your templates, then hit
 `systemctl restart myservice` and watch your changes take immediate effect. You enjoy the ergonomics of an
@@ -16,7 +16,7 @@ interpreted language with the speed and typesafety of Scala.
 
 1. In `build.sc`, let your module extend [`DaemonModule`](src/com/mchange/milldaemon/DaemonModule.scala) defined in this library.
    That will give you access to mill commands
-   * `runDaemon` 
+   * `runDaemon`
    * `runMainDaemon`
 
 2. Override the function `def runDaemonPidFile : Option[os.Path]` to define a place where a PID file should be
@@ -25,7 +25,7 @@ interpreted language with the speed and typesafety of Scala.
 3. Include [mill wrapper](https://github.com/lefou/millw) in your project, and define a launch script that's something like
    ```plaintext
    #!/bin.bash
-   
+
    ./millw runMainDaemon mypkg.MyMain "$@"
    ```
    (This presumes you've also extended `RootModule`. Otherwise, specify `mymodulename.runMainDaemon`.)
