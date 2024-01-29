@@ -42,11 +42,11 @@ interpreted language with the speed and typesafety of Scala.
   `MILL_DAEMON_PID_FILE` in its environment. You can use this to, for example, set up a shutdown hook that
   will delete the PID file when your process terminates.
 
-  _**Note**: If you are running daemons under_ systemd _, this is just a nice-to-have backstop!_ systemd
-  _will try to delete the PID file when your process terminates without your intervention.
-  If you do set a shudown hook to delete the PID file 
-  **please check that the file is a file whose content is your process' PID before deleting**.
-  Don't blindly delete a file just because someone was able to get its path stuck in an environment variable._
+  * _If you are running daemons under_ systemd _, this is just a nice-to-have backstop!_ systemd
+    _will try to delete the PID file when your process terminates without your intervention.
+    If you do set a shudown hook to delete the PID file 
+    **please check that the file is a file whose content is your process' PID before deleting**.
+    Don't blindly delete a file just because someone was able to get its path stuck in an environment variable._
 
 * By default, the daemon subprocess inherits the `mill` launcher's standard-in and standard-out.
   That gives _systemd_ control over where they should be directed, and is usually what you want.
