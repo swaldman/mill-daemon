@@ -43,9 +43,8 @@ interpreted language with the speed and typesafety of Scala.
   will delete the PID file when your process terminates.
 
   _**Note**: If you are running daemons under_ systemd _, this is just a nice-to-have backstop!_ systemd
-  _will try to delete the PID file when your process terminates without your intervention._
-
-  _If you do set a shudown hook to delete the PID file 
+  _will try to delete the PID file when your process terminates without your intervention.
+  If you do set a shudown hook to delete the PID file 
   **please check that the file is a file whose content is your process' PID before deleting**.
   Don't blindly delete a file just because someone was able to get its path stuck in an environment variable._
 
