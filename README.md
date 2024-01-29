@@ -59,7 +59,7 @@ interpreted language with the speed and typesafety of Scala.
 
 ### Examples
 
-* Check out [_feedletter install_](https://github.com/swaldman/feedletter-install) for a simple example.
+* Check out a [_feedletter installation_](https://github.com/swaldman/feedletter-tickle) for a simple example.
 
 ### FAQ
 
