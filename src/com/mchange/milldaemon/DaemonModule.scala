@@ -11,8 +11,8 @@ trait DaemonModule extends JavaModule {
 
   val EnvMillDaemonPidFile = "MILL_DAEMON_PID_FILE"
 
-  def runDaemonOut : os.ProcessOutput = os.Inherit
-  def runDaemonErr : os.ProcessOutput = os.Inherit
+  def runDaemonOut : os.ProcessOutput = os.InheritRaw
+  def runDaemonErr : os.ProcessOutput = os.InheritRaw
 
   def runDaemonPidFile : Option[os.Path] = None
 

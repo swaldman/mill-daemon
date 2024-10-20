@@ -1,9 +1,9 @@
 import mill._, scalalib._, publish._
 
-val MillVersion = "0.11.5"
+val MillVersion = "0.11.12"
 
 object MillDaemon extends RootModule with ScalaModule with PublishModule {
-  override def scalaVersion = "2.13.11"
+  override def scalaVersion = "2.13.15"
   override def ivyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${MillVersion}",
     ivy"com.lihaoyi::mill-scalalib:${MillVersion}",
