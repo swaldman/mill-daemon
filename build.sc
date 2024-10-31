@@ -12,7 +12,7 @@ object `package` extends RootModule with ScalaModule with PublishModule {
   override def scalacOptions = T{ Seq("-deprecation") }
 
   override def artifactName = "mill-daemon"
-  override def publishVersion = T{"0.1.1-SNAPSHOT"}
+  override def publishVersion = T{"0.1.1"}
   override def pomSettings    = T{
     PomSettings(
       description = "A mill module that implements spawning of systemd-appropriate forking daemon processes",
