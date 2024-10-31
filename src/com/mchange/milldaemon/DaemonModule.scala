@@ -55,7 +55,7 @@ trait DaemonModule extends JavaModule {
       } else {
         classPath
       }
-    val javaExe = Jvm.javaExe  
+    val javaExe = Jvm.javaExe
     val args =
       Vector(javaExe) ++
         jvmArgs ++
@@ -63,7 +63,19 @@ trait DaemonModule extends JavaModule {
         mainArgs
 
     ctx.log.debug(s"Run daemon subprocess with args: ${args.map(a => s"'${a}'").mkString(" ")}")
-    Jvm.spawnSubprocessWithBackgroundOutputs(args, envArgs, workingDir, Some(daemonOutputs))
+
+    // from 0.12.0+, we can't use mill utility JVM.spawnSubprocessWithBackgroundOutputs(...)
+    // because the newer version of os-lib it uses defaults to destroying the subprocess on parent
+    // process exit.
+
+    os.proc(args).spawn(
+      cwd = workingDir,
+      env = envArgs,
+      stdin = "",
+      stdout = daemonOutputs._1,
+      stderr = daemonOutputs._2,
+      destroyOnExit = false
+    )
   }
 
   lazy val ProcessPidMethod : java.lang.reflect.Method =
@@ -73,7 +85,7 @@ trait DaemonModule extends JavaModule {
     catch {
       case nsme : NoSuchMethodException =>
         throw new Exception("Pre Java 9 JVMs do not support discovery of process PIDs.", nsme)
-    }    
+    }
 
   private def pid( subProcess : os.SubProcess ) : Long = {
     val jproc = subProcess.wrapped
