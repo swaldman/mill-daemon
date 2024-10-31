@@ -5,6 +5,8 @@ import mill.api.{Ctx,Result}
 import mill.define.Command
 import mill.util.Jvm
 
+import mainargs.arg
+
 import scala.util.control.NonFatal
 
 trait DaemonModule extends JavaModule {
@@ -180,7 +182,7 @@ trait DaemonModule extends JavaModule {
   /**
    * Same as `runDaemon`, but lets you specify a main class to run
    */
-  def runMainDaemon(mainClass: String, args: String*): Command[Unit] = T.command {
+  def runMainDaemon(@arg(positional = true) mainClass: String, args: String*): Command[Unit] = T.command {
     val ctx = implicitly[Ctx]
     val rsubp =
       doRunDaemon(
