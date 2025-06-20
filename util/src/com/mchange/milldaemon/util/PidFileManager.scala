@@ -5,9 +5,11 @@ import scala.util.control.NonFatal
 object PidFileManager {
   private val stdErrLogInfo    : String => Unit = msg => System.err.println(s"INFO: ${msg}")
   private val stdErrLogWarning : String => Unit = msg => System.err.println(s"WARNING: ${msg}")
+
+  lazy val location : Option[String] = sys.env.get("MILL_DAEMON_PID_FILE")
   
   def shutdownHookCarefulDelete(logInfo : String => Unit = stdErrLogInfo, logWarning : String => Unit = stdErrLogWarning) : Option[Thread] = {
-    sys.env.get("MILL_DAEMON_PID_FILE").map { pidFileLoc =>
+    location.map { pidFileLoc =>
       val pidFilePath = os.Path( pidFileLoc )
       new Thread() {
         override def run() : Unit = {
