@@ -2,7 +2,7 @@ import mill._, scalalib._, publish._
 
 object `package` extends RootModule with ScalaModule with PublishModule {
 
-  val MillVersion = "0.12.1"
+  val MillVersion = "0.12.11"
 
   override def scalaVersion = "2.13.15"
   override def ivyDeps = Agg(
