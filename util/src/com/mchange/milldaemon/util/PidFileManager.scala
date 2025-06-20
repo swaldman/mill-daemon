@@ -10,19 +10,21 @@ object PidFileManager {
     sys.env.get("MILL_DAEMON_PID_FILE").map { pidFileLoc =>
       val pidFilePath = os.Path( pidFileLoc )
       new Thread() {
-        try {
-          if (os.exists(pidFilePath)) {
-            val myPid = ProcessHandle.current().pid()
-            val fromFilePid = os.read(pidFilePath).trim().toLong
-            if myPid == fromFilePid then
-              logInfo(s"INFO: Shutdown Hook: Removing PID file '${pidFilePath}'")
-              os.remove( pidFilePath )
+        override def run() : Unit = {
+          try {
+            if (os.exists(pidFilePath)) {
+              val myPid = ProcessHandle.current().pid()
+              val fromFilePid = os.read(pidFilePath).trim().toLong
+              if myPid == fromFilePid then
+                logInfo(s"Shutdown Hook: Removing PID file '${pidFilePath}'")
+                os.remove( pidFilePath )
+            }
           }
-        }
-        catch {
-          case NonFatal(t) =>
-            logWarning("WARNING: Throwable while executing autoremove PID file shutdown hook.")
-            t.printStackTrace()
+          catch {
+            case NonFatal(t) =>
+              logWarning("Throwable while executing autoremove PID file shutdown hook.")
+              t.printStackTrace()
+          }
         }
       }
     }
