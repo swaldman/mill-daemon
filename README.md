@@ -47,6 +47,15 @@ interpreted language with the speed and typesafety of Scala.
     If you do set a shudown hook to delete the PID file 
     **please check that the file is a file whose content is your process' PID before deleting**.
     Don't blindly delete a file just because someone was able to get its path stuck in an environment variable._
+  * As of mill-daemon v0.1.2, there is now a supporting utility to help you do this properly!
+    Just include the dependency `com.mchange::mill-daemon-util:<mill-daemon-version>` in your build,
+    then
+
+    ```scala
+    import com.mchange.milldaemon.util.PidFileManager
+    
+    PidFileManager.installShutdownHookCarefulDelete()
+    ```
 
 * By default, the daemon subprocess inherits the `mill` launcher's standard-in and standard-out.
   That gives _systemd_ control over where they should be directed, and is usually what you want.
