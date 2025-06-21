@@ -1,8 +1,10 @@
+package build
+
 import mill._, scalalib._, publish._
 
-trait MillDaemonCommon extends ScalaModule with PublishModule {
+trait MillDaemonCommon extends ScalaModule with SonatypeCentralPublishModule {
   override def scalacOptions = T{ Seq("-deprecation") }
-  override def publishVersion = T{"0.1.2-SNAPSHOT"}
+  override def publishVersion = T{"0.1.2"}
 
   def makePomSettings( description : String ) : PomSettings = 
     PomSettings(
@@ -19,7 +21,7 @@ trait MillDaemonCommon extends ScalaModule with PublishModule {
 
 object `package` extends RootModule with MillDaemonCommon {
 
-  val MillVersion = "0.12.11"
+  val MillVersion = "0.12.14"
 
   override def ivyDeps = Agg(
     ivy"com.lihaoyi::mill-main:${MillVersion}",
