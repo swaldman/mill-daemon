@@ -1,8 +1,7 @@
 package com.mchange.milldaemon
 
-import mill._, define._, scalalib._
-import mill.api.{Ctx,Result}
-import mill.define.Command
+import mill.*, scalalib.*
+import mill.api.{Result,TaskCtx}
 import mill.util.Jvm
 
 import mainargs.arg
@@ -36,14 +35,14 @@ trait DaemonModule extends JavaModule {
    */
   def runDaemonSubprocess(
       mainClass: String,
-      classPath: Agg[os.Path],
+      classPath: Seq[os.Path],
       jvmArgs: Seq[String] = Seq.empty,
       envArgs: Map[String, String] = Map.empty,
       mainArgs: Seq[String] = Seq.empty,
       workingDir: os.Path = null,
       daemonOutputs: Tuple2[os.ProcessOutput, os.ProcessOutput],
       useCpPassingJar: Boolean = false
-  )(implicit ctx: Ctx): os.SubProcess = {
+  )(ctx: TaskCtx): os.SubProcess = {
     val cp =
       if (useCpPassingJar && !classPath.iterator.isEmpty) {
         val passingJar = os.temp(prefix = "run-", suffix = ".jar", deleteOnExit = false)
@@ -53,7 +52,7 @@ trait DaemonModule extends JavaModule {
             ).mkString(" ")}"
         )
         Jvm.createClasspathPassingJar(passingJar, classPath)
-        Agg(passingJar)
+        Seq(passingJar)
       } else {
         classPath
       }
@@ -94,7 +93,7 @@ trait DaemonModule extends JavaModule {
     ProcessPidMethod.invoke( jproc ).asInstanceOf[Long]
   }
 
-  private def canWrite( ctx : Ctx, path : os.Path ) : Boolean = {
+  private def canWrite( ctx : TaskCtx, path : os.Path ) : Boolean = {
     val f = path.toIO
     if (os.exists(path)) f.canWrite()
     else {
@@ -125,7 +124,8 @@ trait DaemonModule extends JavaModule {
       runUseArgsFile: Boolean,
       daemonOutputs: Tuple2[os.ProcessOutput, os.ProcessOutput],
       pidFile: Option[os.Path]
-  )(args: String*): Ctx => Result[os.SubProcess] = ctx => {
+  )(args: String*): TaskCtx => Result[os.SubProcess] = ctx => {
+
     def spawnIt( extraEnv : Seq[(String,String)] = Nil ) =
       runDaemonSubprocess(
         finalMainClass,
@@ -136,7 +136,7 @@ trait DaemonModule extends JavaModule {
         workingDir = forkWorkingDir,
         daemonOutputs,
         useCpPassingJar = runUseArgsFile
-      )(ctx)
+      )( ctx )
 
     try {
       pidFile match {
@@ -163,8 +163,8 @@ trait DaemonModule extends JavaModule {
    * The process will run indefinitely, until it exits or it is terminated externally.
    * It can survive termination of the parent mill process.
    */
-  def runDaemon(args: String*): Command[Unit] = T.command {
-    val ctx = implicitly[Ctx]
+  def runDaemon(args: String*): Command[Unit] = Task.Command {
+    val ctx = implicitly[TaskCtx]
     val rsubp =
       doRunDaemon(
         runClasspath   = runClasspath(),
@@ -175,15 +175,15 @@ trait DaemonModule extends JavaModule {
         runUseArgsFile = runUseArgsFile(),
         daemonOutputs  = ( runDaemonOut, runDaemonErr ),
         pidFile = runDaemonPidFile
-      )(args: _*)(ctx)
+      )(args*)(ctx)
     rsubp.map( _ => () )
   }
 
   /**
    * Same as `runDaemon`, but lets you specify a main class to run
    */
-  def runMainDaemon(@arg(positional = true) mainClass: String, args: String*): Command[Unit] = T.command {
-    val ctx = implicitly[Ctx]
+  def runMainDaemon(@arg(positional = true) mainClass: String, args: String*): Command[Unit] = Task.Command {
+    val ctx = implicitly[TaskCtx]
     val rsubp =
       doRunDaemon(
         runClasspath   = runClasspath(),
@@ -194,7 +194,7 @@ trait DaemonModule extends JavaModule {
         runUseArgsFile = runUseArgsFile(),
         daemonOutputs  = ( runDaemonOut, runDaemonErr ),
         pidFile = runDaemonPidFile
-      )(args: _*)(ctx)
+      )(args*)(ctx)
     rsubp.map( _ => () )
   }
 }
