@@ -13,11 +13,12 @@ val SourceUrl = "https://raw.githubusercontent.com/com-lihaoyi/mill/refs/heads/m
 val TargetPath = os.Path("millw", os.pwd)
 
 Using.resource( new BufferedInputStream( new URL(SourceUrl).openStream() ) ): is =>
-  val perms : os.PermSet =
-    if os.exists(TargetPath) then
-      os.perms(TargetPath) + OWNER_EXECUTE + GROUP_EXECUTE + OTHERS_EXECUTE
-    else
-      "rwxr-xr-x"
-  os.write.over(TargetPath, is, perms=(os.perms(TargetPath) + OWNER_EXECUTE + GROUP_EXECUTE + OTHERS_EXECUTE))
+  val exists = os.exists(TargetPath)
+  if exists then
+    val perms : os.PermSet = os.perms(TargetPath) + OWNER_EXECUTE + GROUP_EXECUTE + OTHERS_EXECUTE
+    os.write.over(TargetPath, is, perms=(os.perms(TargetPath) + OWNER_EXECUTE + GROUP_EXECUTE + OTHERS_EXECUTE))
+  else
+    val perms : os.PermSet = "rwxr-xr-x"
+    os.write(TargetPath, is, perms=perms)
 
 println("millw updated.")
