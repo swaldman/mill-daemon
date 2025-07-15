@@ -7,7 +7,7 @@ import mill.api.BuildCtx
 
 trait MillDaemonCommon extends ScalaModule with SonatypeCentralPublishModule {
   override def scalacOptions = Task{ Seq("-deprecation") }
-  override def publishVersion = Task{"0.2.0-SNAPSHOT"}
+  override def publishVersion = Task{"0.2.0"}
 
   def makePomSettings( description : String ) : PomSettings = 
     PomSettings(
