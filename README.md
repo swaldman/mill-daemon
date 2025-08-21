@@ -56,7 +56,7 @@ This will place the PID file at your build's workspace root directory under `myd
 However, users will be able to define an alternative location by creating a file in the workspace root directory called `.pid-file-path`,
 and providing in that file an absolute path.
 
-This creates a good, sensible default, but also allows users to override this default without modifying `build.mill`.
+This creates a good, sensible default, but also allows users to override this default without having to modify `build.mill`.
 
 ### Advanced
 
