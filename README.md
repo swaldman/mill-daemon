@@ -20,7 +20,9 @@ interpreted language with the speed and typesafety of Scala.
    * `runMainDaemon`
 
 2. Override the function `def runDaemonPidFile : Option[os.Path]` to define a place where a PID file should be
-   written by _mill_ prior to shutting down, but after spawning your process. (Consider using [`defaultRunDaemonPidFile(...)`](#more-on-runDaemonPidFile))
+   written by _mill_ prior to shutting down, but after spawning your process.
+
+   (Consider using [`defaultRunDaemonPidFile(...)`](#more-on-runDaemonPidFile))
 
 3. Include [mill wrapper](https://github.com/lefou/millw) in your project, and define a launch script that's something like
    ```plaintext
@@ -39,7 +41,9 @@ interpreted language with the speed and typesafety of Scala.
 ### More on `runDaemonPidFile`
 
 `DaemonModule` will not generate any PID file at all unless you set a file location by 
-overriding `def runDaemonPidFile : Option[os.Path]`. You can override this to yield any
+overriding `def runDaemonPidFile : Option[os.Path]`. 
+
+You can override this to yield any
 path you choose (as long as your daemon will have permission to write it).
 
 _mill-daemon_ offers a default. Just write
@@ -48,9 +52,8 @@ _mill-daemon_ offers a default. Just write
   override def runDaemonPidFile : Option[os.Path] = defaultRunDaemonPidFile("mydaemon") // obviously, use your own daemon's name!
 ```
 
-By default, this will place the PID file at your build's workspace root directory under `mydaemon.pid`.
-However, 
-users will be able to define an alternative location by creating a file in the workspace root directory called `.pid-file-path`,
+This will place the PID file at your build's workspace root directory under `mydaemon.pid`.
+However, users will be able to define an alternative location by creating a file in the workspace root directory called `.pid-file-path`,
 and providing in that file an absolute path.
 
 This creates a good, sensible default, but also allows users to override this default without modifying `build.mill`.
