@@ -27,7 +27,7 @@ trait DaemonModule extends JavaModule {
           throw new Exception( s"Could not parse absolute path of desired PID file from contents of ${pidFilePathFile}. Please repair or remove this file.", t )
       }
     else
-      Some( BuildCtx.workspaceRoot / "protopost.pid" )
+      Some( BuildCtx.workspaceRoot / s"${daemonName}.pid" )
 
   // modified from mill.util.Jvm.runSubprocessWithBackgroundOutputs
   /**
