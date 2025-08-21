@@ -19,7 +19,7 @@ trait DaemonModule extends JavaModule {
 
   val pidFilePathFile = BuildCtx.workspaceRoot / ".pid-file-path"
 
-  def defaultPidFile( daemonName : String ) : Some[os.Path] =
+  def defaultRunDaemonPidFile( daemonName : String ) : Some[os.Path] =
     if ( os.exists( pidFilePathFile ) )
       try Some( os.Path( os.read( pidFilePathFile ).trim ) )
       catch {
