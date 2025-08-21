@@ -1,7 +1,7 @@
 package com.mchange.milldaemon
 
 import mill.*, scalalib.*
-import mill.api.{Result,TaskCtx}
+import mill.api.{BuildCtx,Result,TaskCtx}
 import mill.util.Jvm
 
 import mainargs.arg
@@ -16,6 +16,18 @@ trait DaemonModule extends JavaModule {
   def runDaemonErr : os.ProcessOutput = os.InheritRaw
 
   def runDaemonPidFile : Option[os.Path] = None
+
+  val pidFilePathFile = BuildCtx.workspaceRoot / ".pid-file-path"
+
+  def defaultPidFile( daemonName : String ) : Some[os.Path] =
+    if ( os.exists( pidFilePathFile ) )
+      try Some( os.Path( os.read( pidFilePathFile ).trim ) )
+      catch {
+        case NonFatal(t) =>
+          throw new Exception( s"Could not parse absolute path of desired PID file from contents of ${pidFilePathFile}. Please repair or remove this file.", t )
+      }
+    else
+      Some( BuildCtx.workspaceRoot / "protopost.pid" )
 
   // modified from mill.util.Jvm.runSubprocessWithBackgroundOutputs
   /**
