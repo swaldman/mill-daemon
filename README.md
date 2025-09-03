@@ -1,5 +1,7 @@
 # mill-daemon
 
+_Note: mill-daemon 0.2.1 requires mill 1.0.4 or later._
+
 ### Introduction
 
 This project enables [mill](https://mill-build.com/mill/Intro_to_Mill.html) to properly launch systemd
@@ -24,13 +26,13 @@ interpreted language with the speed and typesafety of Scala.
 
    (Consider using [`defaultRunDaemonPidFile(...)`](#more-on-runDaemonPidFile))
 
-3. Include [mill wrapper](https://github.com/lefou/millw) in your project, and define a launch script that's something like
+3. Include the [mill bootstrap script](https://mill-build.org/mill/cli/installation-ide.html#_bootstrap_scripts) in your project. 
+   Then define a launch script that's something like
    ```plaintext
    #!/bin.bash
 
-   ./millw runMainDaemon mypkg.MyMain "$@"
+   ./mill runMainDaemon mypkg.MyMain "$@"
    ```
-   (This presumes you've also extended `RootModule`. Otherwise, specify `mymodulename.runMainDaemon`.)
 
 4. When you write your _systemd_ unit file, specify your daemon's `Type=forking`. Set `PIDFile=`
    to the location you specified in `runDaemonPidFile`.
