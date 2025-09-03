@@ -1,4 +1,4 @@
-//| mill-version: 1.0.0
+//| mill-version: 1.0.4
 //| mill-jvm-version: 17
 package build
 
@@ -7,9 +7,9 @@ import mill.api.BuildCtx
 
 trait MillDaemonCommon extends ScalaModule with SonatypeCentralPublishModule {
   override def scalacOptions = Task{ Seq("-deprecation") }
-  override def publishVersion = Task{"0.2.1-SNAPSHOT"}
+  override def publishVersion = Task{"0.2.1"}
 
-  def makePomSettings( description : String ) : PomSettings = 
+  def makePomSettings( description : String ) : PomSettings =
     PomSettings(
       description = description,
       organization = "com.mchange",
@@ -24,7 +24,7 @@ trait MillDaemonCommon extends ScalaModule with SonatypeCentralPublishModule {
 
 object `package` extends Module with MillDaemonCommon {
 
-  val MillVersion = "1.0.3"
+  val MillVersion = "1.0.4"
 
   override def mvnDeps = Seq(
     mvn"com.lihaoyi::mill-libs:${MillVersion}",
@@ -36,7 +36,7 @@ object `package` extends Module with MillDaemonCommon {
 
   object util extends MillDaemonCommon {
     override def mvnDeps = Seq(
-      mvn"com.lihaoyi::os-lib:0.11.4"
+      mvn"com.lihaoyi::os-lib:0.11.5"
     )
     override def scalaVersion = "3.3.6"
     override def artifactName = "mill-daemon-util"
