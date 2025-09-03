@@ -1,6 +1,6 @@
 # mill-daemon
 
-_&xrarr; mill-daemon v0.2.1 requires mill 1.0.4 or later._
+_mill-daemon v0.2.1 requires mill 1.0.4 or a more recent compatible version._
 
 ### Introduction
 
