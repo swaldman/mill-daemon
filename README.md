@@ -1,6 +1,6 @@
 # mill-daemon
 
-_Note: mill-daemon 0.2.1 requires mill 1.0.4 or later._
+_&xrarr; mill-daemon v0.2.1 requires mill 1.0.4 or later._
 
 ### Introduction
 
@@ -13,6 +13,11 @@ generated source code.
 When you use _mill_ as a launcher, you can simply edit your configuration-as-code or your templates, then hit
 `systemctl restart myservice` and watch your changes take immediate effect. You enjoy the ergonomics of an
 interpreted language with the speed and typesafety of Scala.
+
+> [!NOTE]
+> This [mill plug-in](https://mill-build.org/mill/extending/thirdparty-plugins.html) should not be confused with 
+> mill's [internal long-lived daemon](https://mill-build.org/mill/depth/process-architecture.html#_the_mill_daemon)!
+
 
 ### How it works
 
