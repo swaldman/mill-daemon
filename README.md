@@ -34,10 +34,13 @@ interpreted language with the speed and typesafety of Scala.
 3. Include the [mill bootstrap script](https://mill-build.org/mill/cli/installation-ide.html#_bootstrap_scripts) in your project. 
    Then define a launch script that's something like
    ```plaintext
-   #!/bin.bash
+   #!/usr/bin/env bash
 
-   ./mill runMainDaemon mypkg.MyMain "$@"
+   ./mill --no-daemon --ticker=false runMainDaemon mypkg.MyMain "$@"
    ```
+   
+   Note that the `--no-daemon` add asks mill not to launch its own long-running background process.
+   It doesn't affect the daemon process launched by `runDaemon` or `runMainDaemon`.
 
 4. When you write your _systemd_ unit file, specify your daemon's `Type=forking`. Set `PIDFile=`
    to the location you specified in `runDaemonPidFile`.
